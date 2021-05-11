@@ -1,0 +1,152 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description', content='')
+    meta(name='author', content='Mark Otto, Jacob Thornton, and Bootstrap contributors')
+    meta(name='generator', content='Jekyll v3.8.6')
+    title Arduino Data Capture
+    link(rel='canonical', href='https://getbootstrap.com/docs/4.4/examples/starter-template/')
+    // Bootstrap core CSS
+    link(href='/css/bootstrap.min.css', rel='stylesheet', integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh', crossorigin='anonymous')
+    // Favicons
+    link(rel='apple-touch-icon', href='/docs/4.4/assets/img/favicons/apple-touch-icon.png', sizes='180x180')
+    link(rel='icon', href='/docs/4.4/assets/img/favicons/favicon-32x32.png', sizes='32x32', type='image/png')
+    link(rel='icon', href='/docs/4.4/assets/img/favicons/favicon-16x16.png', sizes='16x16', type='image/png')
+    link(rel='manifest', href='/docs/4.4/assets/img/favicons/manifest.json')
+    link(rel='mask-icon', href='/docs/4.4/assets/img/favicons/safari-pinned-tab.svg', color='#563d7c')
+    link(rel='icon', href='/docs/4.4/assets/img/favicons/favicon.ico')
+    meta(name='msapplication-config', content='/docs/4.4/assets/img/favicons/browserconfig.xml')
+    meta(name='theme-color', content='#563d7c')
+    style.
+      .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      }
+      @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+      }
+      }
+    // Custom styles for this template
+    link(href='/css/starter-template.css', rel='stylesheet')
+  body
+    nav.navbar.navbar-expand-md.navbar-dark.bg-dark.fixed-top
+      a.navbar-brand(href='#') Sams Project
+      button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarsExampleDefault', aria-controls='navbarsExampleDefault', aria-expanded='false', aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      #navbarsExampleDefault.collapse.navbar-collapse
+        ul.navbar-nav.mr-auto
+          li.nav-item.active
+           
+        form.form-inline.my-2.my-lg-0
+          
+    main.container(role='main')
+        .starter-template
+            h1 Arduino Data Capture
+            p.lead
+            | This is a NodeJS project that reads the Serial Port data from the arduino.
+            br
+            |  Step one - Stand in front of the Motion sensor, this then saves to MongoDB and triggers a sound on the webpage. 
+            br
+            br
+            audio#carteSoudCtrl(controls='')
+              source(src='https://www.computerhope.com/jargon/m/example.mp3', type='audio/mpeg')
+              | Your browser does not support the audio element.
+    .container-cover
+      .row
+        .col-lg-1
+        .col-lg-6
+          #chartContainer(style='height: 300px; width: 100%;')
+            script(src='https://canvasjs.com/assets/script/canvasjs.min.js')
+            script(type='text/javascript').
+                window.onload = function () {
+                const dataPoints = [];  
+                var chart = new CanvasJS.Chart("chartContainer",
+                {
+                title:{
+                text: "My Project Statictics"
+                },
+                axisX:{
+                title: "Dates",
+                gridThickness: 3,
+                valueFormatString: "DD-MMM",
+                interval: 1,
+                intervalType: "day",
+                labelAngle: -50
+                },
+                axisY: {
+                title: "Visits"
+                },
+                data: [
+                {
+                type: "column",
+                dataPoints: [//array
+                { x: new Date(#{Date.date}) , y: #{Date.count}},
+                { x: new Date(#{Date1.date}), y: #{Date1.count}},
+                { x: new Date(#{Date2.date}) , y: #{Date2.count}},
+                { x: new Date(#{Date3.date}) , y: #{Date3.count}},
+                { x: new Date(#{Date4.date}) , y: #{Date4.count}},
+                ]
+                }
+                ]
+                
+                });
+              
+                chart.render();
+                 
+                updateChart()
+                function updateChart() {
+               
+                $.getJSON("/stats", function(data) {
+                $.each(data.arrayCount, function(key, value){
+                dataPoints.push({date: value[0], y: parseInt(value[1])});
+                });
+                chart.render();
+                console.log(dataPoints);
+                });
+                chart.render();
+               
+                setTimeout(function(){updateChart()}, 1000);
+              
+                }
+                }
+          canvas#myChart
+
+  
+        .col-lg-4     
+          table#mytable.test.table.table-striped
+            thead
+              
+              tr
+                th(scope='col') 
+                th(scope='col') Date
+                th(scope='col') Visits
+            tbody
+       
+              tr
+                th(scope='row') 
+                td.dateNow1
+            
+                td 
+    .container-cover
+      .row
+                  
+            
+ 
+    // /.container
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+    script.
+      window.jQuery || document.write('<script src="/js/vendor/jquery.slim.min.js"><\\/script>')
+    script(src='/docs/4.4/dist/js/bootstrap.bundle.min.js', integrity='sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm', crossorigin='anonymous')
+    script(src='/js/main.js')
+    script(src='/js/notify.js')
+    script(src='/js/notify.min.js')
+    
+    
+    
